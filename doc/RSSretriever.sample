@@ -1,0 +1,10 @@
+CS_DEBUGSCRIPTS=0
+
+CS_REPO=https://github.com/cesaralba/CAPpodcasts.git
+CS_ROOTWRK=/home/devel/RSSpodcasts
+VENVHOME=${CS_ROOTWRK}/venv
+
+CS_BRANCH=main
+export CS_CONFIG=${CS_ROOTWRK}/etc/RSScosecha.cfg
+export CS_DATADIR=${CS_ROOTWRK}/feeds
+
