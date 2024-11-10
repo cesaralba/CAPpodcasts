@@ -80,31 +80,15 @@ do
     then
       continue
     fi
+    CANCELLEDSTR=${CURCANCELLED}
+  else
+    CANCELLEDSTR="no"
   fi
-  echo "URL='${URL}' -> '${CURURL}'"
-  echo "FILENAME='${FILENAME}' -> '${CURFILENAME}' -> '${FINALFILENAME}'"
-  echo "TERMINADO='${CANCELLED}' -> '${CURCANCELLED}'"
 
   BASEFILENAME=$(dirname ${FINALFILENAME})
   mkdir -pv ${BASEFILENAME}
 
   python ${WRKDIR}/bin/downloadRSSfeed.py -u ${CURURL} -p -m 0 -o ${FINALFILENAME}
-  echo "------------------------------------"
+  echo "Descargado '${CURURL}' -> '${FINALFILENAME}' (cancelled? ${CANCELLEDSTR})"
 done
 IFS=$OLDIFS
-
-##Programas terminados
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/33831/audios.rss -p -m 0 -o ${DATADIR}/RSS-DivanCabala.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/89370/audios.rss -p -m 0 -o ${DATADIR}/RSS-HoraBach.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/23353/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusAntigua.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/101530/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusYSubs.rss
-#
-#
-#
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/118630/audios.rss -p -m 0 -o ${DATADIR}/RSS-GranRepertorio.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/22332/audios.rss -p -m 0 -o ${DATADIR}/RSS-MelPizarra.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/40382/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusYSig.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/84390/audios.rss -p -m 0 -o ${DATADIR}/RSS-SicutLuna.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/111690/audios.rss -p -m 0 -o ${DATADIR}/RSS-TranviaBroadway.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/128614/audios.rss -p -m 0 -o ${DATADIR}/RSS-ArmoniasVocales.rss
-#python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/1000690/audios.rss -p -m 0 -o ${DATADIR}/RSS-BachCualquierHora.rss
