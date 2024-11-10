@@ -1,0 +1,21 @@
+#This file is a sample of the lists of feeds to pass to retrieveRSS.sh or runAll.sh
+# Format:
+# Everything after # is ignored
+#Fields are separated with !
+#Format of line is
+# URL!FileToStore![Cancelled]
+#URL is the location of feed
+#FileToStore is where the result file will be stored. Location may be absolute or relative. If
+#  relative, it will be stored in the location specified in CS_DATADIR in global configuration
+#Cancelled is the status of the show. If value is "yes", feed will be retrieved if FileToStore
+#  does not exist, otherwise it will be skipped
+
+#Cancelled shows
+http://www.rtve.es/api/programas/33831/audios.rss!RSS-DivanCabala.rss!yes # relative path
+http://www.rtve.es/api/programas/89370/audios.rss!feed/RSS-HoraBach.rss!yes # relative path (with dir)
+http://www.rtve.es/api/programas/23353/audios.rss!/tmp/RSS-MusAntigua.rss!yes # absolute path
+
+#Running shows (everything that is not a yes)
+http://www.rtve.es/api/programas/118630/audios.rss!RSS-GranRepertorio.rss!no
+http://www.rtve.es/api/programas/22332/audios.rss!RSS-MelPizarra.rss!
+http://www.rtve.es/api/programas/40382/audios.rss!RSS-MusYSig.rss
