@@ -8,6 +8,11 @@ function soLong {
   exit 1
 }
 
+function trim {
+  MSG=${1:-}
+  echo ${MSG} | sed -e 's/^ *//; s/ *$//'
+}
+
 CONFIGFILE=${DEVSMCONFIGFILE:-/etc/sysconfig/RSSretriever}
 [ -f ${CONFIGFILE} ] && source ${CONFIGFILE}
 
@@ -47,18 +52,43 @@ mkdir -pv ${DATADIR}
 
 export PYTHONPATH="${PYTHONPATH:-}:${WRKDIR}"
 
-#Programas terminados
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/33831/audios.rss -p -m 0 -o ${DATADIR}/RSS-DivanCabala.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/89370/audios.rss -p -m 0 -o ${DATADIR}/RSS-HoraBach.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/23353/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusAntigua.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/101530/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusYSubs.rss
+[ -z "${1:-}" ] && soLong "File list not provided"
 
+SHOPPINGLIST=$1
 
+OLDIFS=$IFS
+IFS='!'
+cat ${SHOPPINGLIST} | sed -e 's/#.*//' | while read URL FILENAME CANCELLED
+do
+  if [ "${URL}" = "" ]
+  then
+    continue
+  fi
+  CURURL=$(trim ${URL})
+  CURFILENAME=$(trim ${FILENAME})
+  CURCANCELLED=$(trim ${CANCELLED})
 
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/118630/audios.rss -p -m 0 -o ${DATADIR}/RSS-GranRepertorio.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/22332/audios.rss -p -m 0 -o ${DATADIR}/RSS-MelPizarra.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/40382/audios.rss -p -m 0 -o ${DATADIR}/RSS-MusYSig.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/84390/audios.rss -p -m 0 -o ${DATADIR}/RSS-SicutLuna.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/111690/audios.rss -p -m 0 -o ${DATADIR}/RSS-TranviaBroadway.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/128614/audios.rss -p -m 0 -o ${DATADIR}/RSS-ArmoniasVocales.rss
-python ${WRKDIR}/bin/downloadRSSfeed.py -u http://www.rtve.es/api/programas/1000690/audios.rss -p -m 0 -o ${DATADIR}/RSS-BachCualquierHora.rss
+  FINALFILENAME="${DATADIR}/${CURFILENAME}"
+  if [[ ${CURFILENAME} =~ ^/ ]]
+  then
+    FINALFILENAME=${CURFILENAME}
+  fi
+
+  if [ "${CURCANCELLED}" = "yes" ]
+  then
+    if [ -f ${FINALFILENAME} ]
+    then
+      continue
+    fi
+    CANCELLEDSTR=${CURCANCELLED}
+  else
+    CANCELLEDSTR="no"
+  fi
+
+  BASEFILENAME=$(dirname ${FINALFILENAME})
+  mkdir -pv ${BASEFILENAME}
+
+  python ${WRKDIR}/bin/downloadRSSfeed.py -u ${CURURL} -p -m 0 -o ${FINALFILENAME}
+  echo "Descargado '${CURURL}' -> '${FINALFILENAME}' (cancelled? ${CANCELLEDSTR})"
+done
+IFS=$OLDIFS
