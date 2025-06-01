@@ -1,4 +1,4 @@
-validators==0.34.0
+validators==0.35.0
 rfeed==1.1.1
 ConfigArgParse==1.7
 
