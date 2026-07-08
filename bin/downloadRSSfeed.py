@@ -1,6 +1,8 @@
 from locale import LC_ALL, setlocale
+import logging
 
 from configargparse import ArgumentParser
+from pip._internal.utils import logging
 
 from libs.RSS.feed import FeedRecord
 
@@ -35,6 +37,9 @@ def main(args):
     myItems = myFeed.retrieve(dryRun=args.dryrun)
 
     if not args.dryrun:
+        if myItems is None:
+            logging.warning(f"Problemas descargando '{args.title}' ({args.url})")
+            return
         myItems.dump(args.outfile)
 
 if __name__ == '__main__':

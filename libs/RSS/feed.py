@@ -243,6 +243,9 @@ class FeedRecord:
                     except IndexError as exc:
                         logging.debug(f"FeedRecord '{self.title}' with no Items.", exc)
                         break
+                    except HTTPError as exc:
+                        logging.exception(f"Problems downloading '{self.title}'. Bye")
+                        return None
                     RSSdownloaded.append(data)
                     pageCounter += 1
 
