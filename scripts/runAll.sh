@@ -16,7 +16,7 @@ fi
 echo "Ejecución $0 $(date)"
 BASEDIR=$(cd "$(dirname $(readlink -e $0))" && pwd )
 
-CONFIGFILE=${DEVSMCONFIGFILE:-/etc/sysconfig/RSSretriever}
+CONFIGFILE=${DEVRSSCONFIGFILE:-/etc/sysconfig/RSSretriever}
 [ -f ${CONFIGFILE} ] && source ${CONFIGFILE}
 
 bash ${BASEDIR}/buildDataTree.sh
