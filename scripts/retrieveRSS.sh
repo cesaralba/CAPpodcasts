@@ -13,7 +13,7 @@ function trim {
   echo ${MSG} | sed -e 's/^ *//; s/ *$//'
 }
 
-CONFIGFILE=${DEVSMCONFIGFILE:-/etc/sysconfig/RSSretriever}
+CONFIGFILE=${DEVRSSCONFIGFILE:-/etc/sysconfig/RSSretriever}
 [ -f ${CONFIGFILE} ] && source ${CONFIGFILE}
 
 if [ ${CS_DEBUGSCRIPTS:-0} = 1 ]

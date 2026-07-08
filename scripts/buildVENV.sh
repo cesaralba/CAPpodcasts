@@ -2,7 +2,7 @@
 
 set -eu
 
-CONFIGFILE=${DEVSMCONFIGFILE:-/etc/sysconfig/RSSretriever}
+CONFIGFILE=${DEVRSSCONFIGFILE:-/etc/sysconfig/RSSretriever}
 [ -f ${CONFIGFILE} ] && source ${CONFIGFILE}
 
 if [ ${CS_DEBUGSCRIPTS:-0} = 1 ]
